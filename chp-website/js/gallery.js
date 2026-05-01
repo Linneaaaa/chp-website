@@ -50,7 +50,7 @@ function openSeries(seriesKey) {
   const candidates = [];
   series.pages.forEach(page => {
     for (let i = 1; i <= 6; i++) {
-      candidates.push({ src: `${basePath}/${page}/${page}-${i}.jpg`, page, idx: i });
+      candidates.push({ src: `${basePath}/${page}/${page}-${i}.png`, page, idx: i });
     }
   });
 
