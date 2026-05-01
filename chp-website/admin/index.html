@@ -1,0 +1,344 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>CHP Admin Panel</title>
+<link rel="stylesheet" href="admin.css">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+</head>
+<body>
+
+<!-- ═══════════════ LOGIN ═══════════════ -->
+<div id="loginScreen">
+  <div class="login-box">
+    <div class="login-logo">CHP<span> ·</span></div>
+    <div class="login-sub">Admin Panel</div>
+    <div class="login-group">
+      <label>Username</label>
+      <input type="text" id="loginUser" placeholder="admin" autocomplete="username">
+    </div>
+    <div class="login-group">
+      <label>Password</label>
+      <input type="password" id="loginPass" placeholder="••••••••" autocomplete="current-password">
+    </div>
+    <button class="login-btn" onclick="doLogin()">Sign In</button>
+    <div class="login-error" id="loginError">Incorrect username or password.</div>
+  </div>
+</div>
+
+<!-- ═══════════════ DASHBOARD ═══════════════ -->
+<div id="dashboard">
+  <div class="layout">
+
+    <!-- SIDEBAR -->
+    <aside class="sidebar">
+      <div class="sidebar-logo">CHP <span>Admin</span></div>
+
+      <div class="sidebar-section">Overview</div>
+      <ul class="sidebar-nav">
+        <li><a href="#" class="active" onclick="showPanel('overview',this)">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><rect x="3" y="3" width="7" height="7"/><rect x="14" y="3" width="7" height="7"/><rect x="14" y="14" width="7" height="7"/><rect x="3" y="14" width="7" height="7"/></svg>
+          Dashboard
+        </a></li>
+        <li><a href="#" onclick="showPanel('messages',this)">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M21 15a2 2 0 01-2 2H7l-4 4V5a2 2 0 012-2h14a2 2 0 012 2z"/></svg>
+          Messages <span class="badge" id="msgBadge">0</span>
+        </a></li>
+      </ul>
+
+      <div class="sidebar-section">Content</div>
+      <ul class="sidebar-nav">
+        <li><a href="#" onclick="showPanel('products',this)">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M21 16V8a2 2 0 00-1-1.73l-7-4a2 2 0 00-2 0l-7 4A2 2 0 003 8v8a2 2 0 001 1.73l7 4a2 2 0 002 0l7-4A2 2 0 0021 16z"/></svg>
+          Products
+        </a></li>
+        <li><a href="#" onclick="showPanel('homepage',this)">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M3 9l9-7 9 7v11a2 2 0 01-2 2H5a2 2 0 01-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/></svg>
+          Homepage
+        </a></li>
+        <li><a href="#" onclick="showPanel('about',this)">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg>
+          About &amp; Factory
+        </a></li>
+        <li><a href="#" onclick="showPanel('process',this)">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><polyline points="22 12 18 12 15 21 9 3 6 12 2 12"/></svg>
+          Process Steps
+        </a></li>
+        <li><a href="#" onclick="showPanel('contact',this)">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M22 16.92v3a2 2 0 01-2.18 2 19.79 19.79 0 01-8.63-3.07A19.5 19.5 0 013.07 9.81a19.79 19.79 0 01-3.07-8.63A2 2 0 012 .18h3a2 2 0 012 1.72c.127.96.361 1.903.7 2.81a2 2 0 01-.45 2.11L6.09 7.91a16 16 0 006 6l1.27-1.27a2 2 0 012.11-.45c.907.339 1.85.573 2.81.7A2 2 0 0122 14.92z"/></svg>
+          Contact Info
+        </a></li>
+      </ul>
+
+      <div class="sidebar-section">Settings</div>
+      <ul class="sidebar-nav">
+        <li><a href="#" onclick="showPanel('settings',this)">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><circle cx="12" cy="12" r="3"/><path d="M19.07 4.93l-1.41 1.41M19.07 19.07l-1.41-1.41M4.93 4.93l1.41 1.41M4.93 19.07l1.41-1.41M12 2v2M12 20v2M2 12h2M20 12h2"/></svg>
+          Settings
+        </a></li>
+      </ul>
+
+      <div class="sidebar-footer">
+        <span id="adminUsername">admin</span>
+        <button class="logout-btn" onclick="doLogout()">Logout</button>
+      </div>
+    </aside>
+
+    <!-- MAIN -->
+    <div class="main-content">
+      <div class="topbar">
+        <div class="topbar-title" id="topbarTitle">Dashboard</div>
+        <div class="topbar-actions" id="topbarActions"></div>
+      </div>
+      <div class="page-content">
+
+        <!-- OVERVIEW -->
+        <div class="panel active" id="panel-overview">
+          <div class="stat-cards">
+            <div class="stat-card gold">
+              <div class="stat-card-label">New Messages</div>
+              <div class="stat-card-num" id="statNew">—</div>
+              <div class="stat-card-sub">Awaiting response</div>
+            </div>
+            <div class="stat-card">
+              <div class="stat-card-label">Total Inquiries</div>
+              <div class="stat-card-num" id="statTotal">—</div>
+              <div class="stat-card-sub">All time</div>
+            </div>
+            <div class="stat-card">
+              <div class="stat-card-label">Products Listed</div>
+              <div class="stat-card-num" id="statProducts">—</div>
+              <div class="stat-card-sub">In catalog</div>
+            </div>
+            <div class="stat-card">
+              <div class="stat-card-label">Completed</div>
+              <div class="stat-card-num" id="statDone">—</div>
+              <div class="stat-card-sub">Closed inquiries</div>
+            </div>
+          </div>
+          <div class="table-wrap">
+            <div class="table-header">
+              <div class="table-header-title">Recent Inquiries</div>
+              <a href="#" class="btn btn-ghost btn-sm" onclick="showPanel('messages',document.querySelector('[onclick*=messages]'))">View All</a>
+            </div>
+            <table id="recentTable">
+              <thead><tr><th>Name</th><th>Company</th><th>Product</th><th>Date</th><th>Status</th><th></th></tr></thead>
+              <tbody id="recentTbody"></tbody>
+            </table>
+          </div>
+        </div>
+
+        <!-- MESSAGES -->
+        <div class="panel" id="panel-messages">
+          <div class="table-wrap">
+            <div class="table-header">
+              <div class="table-header-title">Customer Inquiries</div>
+              <button class="btn btn-danger btn-sm" onclick="clearMessages()">Clear All</button>
+            </div>
+            <table>
+              <thead><tr><th>Name</th><th>Company</th><th>Email</th><th>Product</th><th>Date</th><th>Status</th><th>Actions</th></tr></thead>
+              <tbody id="messagesTbody"></tbody>
+            </table>
+          </div>
+          <div class="msg-detail" id="msgDetail">
+            <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:1rem;">
+              <strong style="font-size:0.85rem;">Message Detail</strong>
+              <button class="btn btn-ghost btn-sm" onclick="document.getElementById('msgDetail').classList.remove('open')">Close</button>
+            </div>
+            <div id="msgDetailContent"></div>
+          </div>
+        </div>
+
+        <!-- PRODUCTS -->
+        <div class="panel" id="panel-products">
+          <div style="display:flex;gap:1rem;margin-bottom:1.5rem;">
+            <button class="btn btn-dark" onclick="showProductForm()">+ Add Product</button>
+          </div>
+          <div id="productFormWrap" style="display:none; margin-bottom:1.5rem;">
+            <div class="form-section">
+              <div class="form-section-title" id="productFormTitle">New Product</div>
+              <div class="form-row triple">
+                <div class="field-group"><label>Product Name</label><input type="text" id="pName" placeholder="e.g. Straight Round Bottle 10"></div>
+                <div class="field-group"><label>Category</label>
+                  <select id="pCat">
+                    <option value="round">Round Bottle</option>
+                    <option value="flat">Flat Bottle</option>
+                    <option value="jar">Jar</option>
+                    <option value="dropper">Dropper</option>
+                    <option value="foam">Foam & Special</option>
+                  </select>
+                </div>
+                <div class="field-group"><label>Material</label><input type="text" id="pMaterial" placeholder="PET / PETG / PP / PE"></div>
+              </div>
+              <div class="form-row triple">
+                <div class="field-group"><label>Capacity</label><input type="text" id="pCapacity" placeholder="e.g. 30ml – 500ml"></div>
+                <div class="field-group"><label>Finish Options</label><input type="text" id="pFinish" placeholder="e.g. Matte / Glossy / Frosted"></div>
+                <div class="field-group"><label>OEM/ODM</label>
+                  <select id="pCustom"><option value="yes">Yes – Available</option><option value="no">No</option></select>
+                </div>
+              </div>
+              <div class="form-row single">
+                <div class="field-group"><label>Description</label><textarea id="pDesc" placeholder="Brief product description..."></textarea></div>
+              </div>
+              <div class="field-group" style="margin-bottom:1rem;">
+                <label>Product Images (up to 6)</label>
+                <div class="img-upload-grid" id="imgUploadGrid">
+                  <div class="img-slot" onclick="triggerImgUpload(this)">
+                    <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#CCC" stroke-width="1.5"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
+                    <span class="img-slot-label">Add Photo</span>
+                    <input type="file" accept="image/*" style="display:none" onchange="handleImgUpload(this)">
+                  </div>
+                </div>
+              </div>
+              <div style="display:flex;gap:0.6rem;">
+                <button class="btn btn-dark" onclick="saveProduct()">Save Product</button>
+                <button class="btn btn-ghost" onclick="cancelProductForm()">Cancel</button>
+              </div>
+            </div>
+          </div>
+          <div class="table-wrap">
+            <table>
+              <thead><tr><th>Name</th><th>Category</th><th>Material</th><th>Capacity</th><th>Custom</th><th>Actions</th></tr></thead>
+              <tbody id="productsTbody"></tbody>
+            </table>
+          </div>
+        </div>
+
+        <!-- HOMEPAGE -->
+        <div class="panel" id="panel-homepage">
+          <div class="form-section">
+            <div class="form-section-title">Hero Banner</div>
+            <div class="form-row">
+              <div class="field-group"><label>Main Headline (Line 1)</label><input type="text" id="heroLine1" placeholder="Crafting Bottles"></div>
+              <div class="field-group"><label>Main Headline (Line 2)</label><input type="text" id="heroLine2" placeholder="That Elevate Your Brand"></div>
+            </div>
+            <div class="form-row single">
+              <div class="field-group"><label>Hero Subtitle</label><textarea id="heroSub" rows="2" placeholder="We design and manufacture..."></textarea></div>
+            </div>
+            <div class="form-row">
+              <div class="field-group"><label>Button 1 Text</label><input type="text" id="btn1Text" placeholder="Explore Products →"></div>
+              <div class="field-group"><label>Button 2 Text</label><input type="text" id="btn2Text" placeholder="Request a Sample"></div>
+            </div>
+            <button class="btn btn-dark" onclick="saveSection('homepage')">Save Banner</button>
+          </div>
+          <div class="form-section">
+            <div class="form-section-title">Stats Bar</div>
+            <div class="form-row">
+              <div class="field-group"><label>Years</label><input type="text" id="statYears" placeholder="12+"></div>
+              <div class="field-group"><label>SKUs</label><input type="text" id="statSKUs" placeholder="500+"></div>
+              <div class="field-group"><label>Clients</label><input type="text" id="statClients" placeholder="50+"></div>
+              <div class="field-group"><label>Certifications</label><input type="text" id="statCerts" placeholder="4"></div>
+            </div>
+            <button class="btn btn-dark" onclick="saveSection('stats')">Save Stats</button>
+          </div>
+        </div>
+
+        <!-- ABOUT -->
+        <div class="panel" id="panel-about">
+          <div class="form-section">
+            <div class="form-section-title">Company Introduction</div>
+            <div class="form-row single">
+              <div class="field-group"><label>Paragraph 1</label><textarea id="aboutP1" rows="4"></textarea></div>
+            </div>
+            <div class="form-row single">
+              <div class="field-group"><label>Paragraph 2</label><textarea id="aboutP2" rows="4"></textarea></div>
+            </div>
+            <button class="btn btn-dark" onclick="saveSection('about')">Save</button>
+          </div>
+          <div class="form-section">
+            <div class="form-section-title">Factory Images (upload up to 6)</div>
+            <div class="img-upload-grid" id="factoryImgGrid">
+              <div class="img-slot" onclick="triggerImgUpload(this)">
+                <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#CCC" stroke-width="1.5"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
+                <span class="img-slot-label">Add Factory Photo</span>
+                <input type="file" accept="image/*" style="display:none" onchange="handleImgUpload(this)">
+              </div>
+            </div>
+            <div style="margin-top:1rem;"><button class="btn btn-dark" onclick="saveSection('factory')">Save Factory Photos</button></div>
+          </div>
+        </div>
+
+        <!-- PROCESS -->
+        <div class="panel" id="panel-process">
+          <div class="form-section">
+            <div class="form-section-title">Customization Process Steps</div>
+            <div id="processStepsEdit"></div>
+            <button class="btn btn-dark" onclick="saveSection('process')" style="margin-top:1rem;">Save Steps</button>
+          </div>
+        </div>
+
+        <!-- CONTACT -->
+        <div class="panel" id="panel-contact">
+          <div class="form-section">
+            <div class="form-section-title">Contact Information</div>
+            <div class="form-row">
+              <div class="field-group"><label>Phone 1</label><input type="text" id="cPhone1" placeholder="+86 158 0059 5981"></div>
+              <div class="field-group"><label>Phone 2</label><input type="text" id="cPhone2" placeholder="+86 21 5778 0963"></div>
+            </div>
+            <div class="form-row">
+              <div class="field-group"><label>Email</label><input type="email" id="cEmail" placeholder="zhangyanqing@cn-chp.com"></div>
+              <div class="field-group"><label>WhatsApp Number</label><input type="text" id="cWhatsApp" placeholder="8615800595981"></div>
+            </div>
+            <div class="form-row single">
+              <div class="field-group"><label>Address</label><textarea id="cAddress" rows="2" placeholder="No.88 Zhaojiajing Road..."></textarea></div>
+            </div>
+            <div class="form-row">
+              <div class="field-group"><label>WeChat ID</label><input type="text" id="cWeChat" placeholder="Your WeChat ID"></div>
+              <div class="field-group"><label>Postal Code</label><input type="text" id="cPostal" placeholder="201611"></div>
+            </div>
+            <button class="btn btn-dark" onclick="saveSection('contact')">Save Contact Info</button>
+          </div>
+          <div class="form-section">
+            <div class="form-section-title">Email Notification (for new inquiries)</div>
+            <p style="font-size:0.8rem;color:var(--mid-gray);margin-bottom:1rem;">
+              To enable automatic email alerts when customers submit forms, 
+              connect a service like <strong>EmailJS</strong> or <strong>Formspree</strong>. 
+              Enter your EmailJS Service ID and Template ID below.
+            </p>
+            <div class="form-row">
+              <div class="field-group"><label>EmailJS Service ID</label><input type="text" id="emailjsService" placeholder="service_xxxxxxx"></div>
+              <div class="field-group"><label>EmailJS Template ID</label><input type="text" id="emailjsTemplate" placeholder="template_xxxxxxx"></div>
+            </div>
+            <div class="form-row single">
+              <div class="field-group"><label>Notification Email (receive alerts)</label><input type="email" id="notifyEmail" placeholder="admin@chp-packing.com"></div>
+            </div>
+            <button class="btn btn-dark" onclick="saveSection('email')">Save Email Settings</button>
+          </div>
+        </div>
+
+        <!-- SETTINGS -->
+        <div class="panel" id="panel-settings">
+          <div class="form-section">
+            <div class="form-section-title">Change Password</div>
+            <div class="form-row">
+              <div class="field-group"><label>Current Password</label><input type="password" id="curPass"></div>
+              <div class="field-group"><label>New Password</label><input type="password" id="newPass"></div>
+            </div>
+            <button class="btn btn-dark" onclick="changePassword()">Update Password</button>
+          </div>
+          <div class="form-section">
+            <div class="form-section-title">Export Data</div>
+            <p style="font-size:0.8rem;color:var(--mid-gray);margin-bottom:1rem;">Download all customer inquiries as a CSV file.</p>
+            <button class="btn btn-ghost" onclick="exportCSV()">Export Inquiries CSV</button>
+          </div>
+          <div class="form-section">
+            <div class="form-section-title">About This System</div>
+            <p style="font-size:0.8rem;color:var(--mid-gray);line-height:1.8;">
+              CHP Admin v1.0 — Static admin panel. Data is stored in browser localStorage.<br>
+              For production use with real database and email notifications, 
+              connect a backend service (Firebase, Supabase, or custom API).
+            </p>
+          </div>
+        </div>
+
+      </div><!-- /page-content -->
+    </div><!-- /main-content -->
+  </div>
+</div>
+
+<div class="toast" id="toast"></div>
+
+<script src="admin.js"></script>
+</body>
+</html>
