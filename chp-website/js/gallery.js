@@ -124,3 +124,33 @@ function closeZoom() {
 
 // Prevent zoom close when clicking the image itself
 document.getElementById('imgZoomImg')?.addEventListener('click', e => e.stopPropagation());
+// ── AUTO-LOAD COVER IMAGES FOR SERIES CARDS ──
+document.addEventListener('DOMContentLoaded', () => {
+  document.querySelectorAll('.series-card').forEach(card => {
+    const seriesKey = card.dataset.series;
+    const series = SERIES_MAP[seriesKey];
+    if (!series) return;
+
+    const firstPage = series.pages[0];
+    const folder = `images/products/${series.folder}`;
+    const placeholder = card.querySelector('.series-placeholder');
+
+    // Try p6-1.png, p6-2.png ... until one loads
+    let tried = 0;
+    function tryNext(i) {
+      if (i > 6) return; // give up after 6 attempts
+      const img = new Image();
+      img.onload = () => {
+        // Success! Replace placeholder with the image
+        const imgEl = document.createElement('img');
+        imgEl.src = img.src;
+        imgEl.alt = series.name;
+        imgEl.style.cssText = 'width:100%;height:100%;object-fit:cover;display:block;';
+        placeholder.replaceWith(imgEl);
+      };
+      img.onerror = () => tryNext(i + 1);
+      img.src = `${folder}/${firstPage}/${firstPage}-${i}.png`;
+    }
+    tryNext(1);
+  });
+});
