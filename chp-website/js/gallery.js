@@ -10,7 +10,7 @@ const SERIES_MAP = {
   s08: { name: "Dropper Bottle 滴管瓶", folder: "08-dropper-bottle_滴管瓶", pages: ["p54"] },
   s09: { name: "Straight Round Jar 直圆罐", folder: "09-straight-round-jar_直圆罐", pages: ["p56","p57","p58","p59","p60"] },
   s10: { name: "Sunscreen Bottle 防晒瓶", folder: "10-sunscreen-bottle_防晒瓶", pages: ["p62"] },
-  s11: { name: "Washing Bottle 洗护瓶", folder: "11-washing-bottle_洗护瓶", pages: ["p5","p64","p65"] },
+  s11: { name: "Washing Bottle 洗护瓶", folder: "11-washing-bottle_洗护瓶", pages: ["p64","p65"] },
   s12: { name: "Sample 试用装", folder: "12-sample_试用装", pages: ["p67","p68"] },
 };
 
