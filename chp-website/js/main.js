@@ -65,35 +65,53 @@ document.getElementById('inquiryForm')?.addEventListener('submit', async (e) => 
   e.preventDefault();
   const btn = e.target.querySelector('[type="submit"]');
   btn.textContent = 'Sending...'; btn.disabled = true;
-  const data = Object.fromEntries(new FormData(e.target).entries());
-  const msgs = JSON.parse(localStorage.getItem('chp_messages') || '[]');
-  msgs.unshift({ ...data, id: Date.now(), status: 'new', time: new Date().toISOString() });
-  localStorage.setItem('chp_messages', JSON.stringify(msgs));
-  await new Promise(r => setTimeout(r, 900));
-  e.target.style.display = 'none';
-  document.getElementById('successMsg').style.display = 'block';
-  setTimeout(() => {
-    closeModal();
-    e.target.style.display = ''; document.getElementById('successMsg').style.display = 'none';
-    e.target.reset(); btn.textContent = 'Send Inquiry →'; btn.disabled = false;
-  }, 3000);
-});
 
+  const formData = new FormData(e.target);
+  try {
+    const res = await fetch('https://formspree.io/f/xgodopeq', {
+      method: 'POST',
+      body: formData,
+      headers: { 'Accept': 'application/json' }
+    });
+    if (res.ok) {
+      e.target.style.display = 'none';
+      document.getElementById('successMsg').style.display = 'block';
+      setTimeout(() => {
+        closeModal();
+        e.target.style.display = ''; document.getElementById('successMsg').style.display = 'none';
+        e.target.reset(); btn.textContent = 'Send Inquiry →'; btn.disabled = false;
+      }, 3000);
+    } else {
+      btn.textContent = 'Error, try again'; btn.disabled = false;
+    }
+  } catch {
+    btn.textContent = 'Error, try again'; btn.disabled = false;
+  }
+});
 // ── CONTACT FORM ──
 document.getElementById('contactForm')?.addEventListener('submit', async (e) => {
   e.preventDefault();
   const btn = e.target.querySelector('[type="submit"]');
   const orig = btn.textContent;
   btn.textContent = 'Sending...'; btn.disabled = true;
-  const data = Object.fromEntries(new FormData(e.target).entries());
-  const msgs = JSON.parse(localStorage.getItem('chp_messages') || '[]');
-  msgs.unshift({ ...data, id: Date.now(), status: 'new', time: new Date().toISOString() });
-  localStorage.setItem('chp_messages', JSON.stringify(msgs));
-  await new Promise(r => setTimeout(r, 900));
-  btn.textContent = '✓ Sent'; btn.style.background = '#4caf50';
-  setTimeout(() => { e.target.reset(); btn.textContent = orig; btn.style.background = ''; btn.disabled = false; }, 3000);
-});
 
+  const formData = new FormData(e.target);
+  try {
+    const res = await fetch('https://formspree.io/f/xgodopeq', {
+      method: 'POST',
+      body: formData,
+      headers: { 'Accept': 'application/json' }
+    });
+    if (res.ok) {
+      btn.textContent = '✓ Sent'; btn.style.background = '#4caf50';
+      setTimeout(() => { e.target.reset(); btn.textContent = orig; btn.style.background = ''; btn.disabled = false; }, 3000);
+    } else {
+      btn.textContent = 'Error, try again'; btn.disabled = false;
+    }
+  } catch {
+    btn.textContent = 'Error, try again'; btn.disabled = false;
+  }
+});
 // ── FILE UPLOAD LABEL ──
 document.querySelectorAll('input[type="file"]').forEach(input => {
   input.addEventListener('change', () => {
