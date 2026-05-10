@@ -104,25 +104,66 @@ document.addEventListener('keydown', e => {
 });
 
 // ── IMAGE ZOOM ──
+// ── IMAGE ZOOM WITH NAVIGATION ──
+let zoomImages = [];   // 当前gallery里所有图片
+let zoomIndex = 0;     // 当前看的是第几张
+
 function openZoom(img) {
+  // 收集gallery里所有图片
+  zoomImages = Array.from(document.querySelectorAll('#galleryGrid .gallery-item img'));
+  zoomIndex = zoomImages.indexOf(img);
+
   const overlay = document.getElementById('imgZoomOverlay');
   const zoomImg = document.getElementById('imgZoomImg');
   zoomImg.src = img.src;
   zoomImg.alt = img.alt;
   overlay.classList.add('open');
   document.body.style.overflow = 'hidden';
+  updateZoomArrows();
 }
 
 function closeZoom() {
   const overlay = document.getElementById('imgZoomOverlay');
   overlay.classList.remove('open');
-  // Don't re-enable scroll if gallery is still open
   if (!document.getElementById('galleryOverlay').classList.contains('open')) {
     document.body.style.overflow = '';
   }
 }
 
-// Prevent zoom close when clicking the image itself
+function zoomPrev() {
+  if (zoomIndex > 0) {
+    zoomIndex--;
+    const zoomImg = document.getElementById('imgZoomImg');
+    zoomImg.src = zoomImages[zoomIndex].src;
+    zoomImg.alt = zoomImages[zoomIndex].alt;
+    updateZoomArrows();
+  }
+}
+
+function zoomNext() {
+  if (zoomIndex < zoomImages.length - 1) {
+    zoomIndex++;
+    const zoomImg = document.getElementById('imgZoomImg');
+    zoomImg.src = zoomImages[zoomIndex].src;
+    zoomImg.alt = zoomImages[zoomIndex].alt;
+    updateZoomArrows();
+  }
+}
+
+function updateZoomArrows() {
+  const prevBtn = document.getElementById('zoomPrev');
+  const nextBtn = document.getElementById('zoomNext');
+  if (prevBtn) prevBtn.style.opacity = zoomIndex === 0 ? '0.3' : '1';
+  if (nextBtn) nextBtn.style.opacity = zoomIndex === zoomImages.length - 1 ? '0.3' : '1';
+}
+
+// 键盘左右箭头也能翻页
+document.addEventListener('keydown', e => {
+  if (!document.getElementById('imgZoomOverlay').classList.contains('open')) return;
+  if (e.key === 'ArrowLeft') zoomPrev();
+  if (e.key === 'ArrowRight') zoomNext();
+});
+
 document.getElementById('imgZoomImg')?.addEventListener('click', e => e.stopPropagation());
 // ── AUTO-LOAD COVER IMAGES FOR SERIES CARDS ──
 document.addEventListener('DOMContentLoaded', () => {
