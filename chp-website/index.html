@@ -330,6 +330,11 @@
 
   <!-- Image Zoom Lightbox -->
   <div class="img-zoom-overlay" id="imgZoomOverlay" onclick="closeZoom()">
+  <button class="zoom-arrow zoom-arrow-left" id="zoomPrev" onclick="event.stopPropagation();zoomPrev()">&#8249;</button>
+  <img id="imgZoomImg" src="" alt="">
+  <button class="zoom-arrow zoom-arrow-right" id="zoomNext" onclick="event.stopPropagation();zoomNext()">&#8250;</button>
+  <button class="zoom-close" onclick="closeZoom()">✕</button>
+</div>
     <img id="imgZoomImg" src="" alt="">
     <button class="img-zoom-close" onclick="closeZoom()">✕</button>
   </div>
