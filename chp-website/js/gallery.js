@@ -1,7 +1,7 @@
 // ── SERIES DATA MAP ──
 const SERIES_MAP = {
   s01: { name: "Round Shoulder Bottle 圆肩瓶", folder: "01-round-shoulder-bottle_圆肩瓶", pages: ["p6","p7","p8","p9","p10"] },
-  s02: { name: "Straight Round Bottle 直肩圆柱瓶", folder: "02-straight-round-bottle_直肩圆柱瓶", pages: ["p11","p12","p13","p14","p15","p16","p17","p18","p19","p20","p21","p22"] },
+  s02: { name: "Straight Round Bottle 直肩圆柱瓶", folder: "02-straight-round-bottle_直肩圆柱瓶", pages: ["p11","p12","p13","p14","p15","p16","p17","p18","p19","p20","p21","p22","p23","p24","p25","p26"] },
   s03: { name: "Flat Bottle 扁瓶", folder: "03-flat-bottle_扁瓶", pages: ["p23","p24"] },
   s04: { name: "Slant-Shoulder Bottle 斜肩瓶", folder: "04-slant-shoulder-bottle_斜肩瓶", pages: ["p25","p26"] },
   s05: { name: "Triangular Bottle 三角瓶", folder: "05-triangular-bottle_三角瓶", pages: ["p27"] },
