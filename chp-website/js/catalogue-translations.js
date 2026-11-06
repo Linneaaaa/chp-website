@@ -95,3 +95,39 @@ Object.assign(TRANSLATIONS.vi, {
   "spec_dimensions": "Kích thước",
   "spec_neckFinish": "Quy cách cổ chai"
 });
+
+Object.assign(TRANSLATIONS.en, {
+  "new_title": "2026 Catalogue Updates",
+  "new_label": "2026 Collection",
+  "gallery_archive": "View previous catalogue images",
+  "gallery_current": "View 2026 catalogue images",
+  "view_collection": "View collection & specifications",
+  "catalogue_ready": "2026 · November 6 edition · PDF · 23.2 MB"
+});
+
+Object.assign(TRANSLATIONS.zh, {
+  "new_title": "2026 产品更新",
+  "new_label": "2026 产品系列",
+  "gallery_archive": "查看往期产品图片",
+  "gallery_current": "查看 2026 产品图片",
+  "view_collection": "查看系列与规格",
+  "catalogue_ready": "2026 年 11 月 6 日版 · PDF · 23.2 MB"
+});
+
+Object.assign(TRANSLATIONS.ko, {
+  "new_title": "2026 카탈로그 업데이트",
+  "new_label": "2026 컬렉션",
+  "gallery_archive": "이전 카탈로그 이미지 보기",
+  "gallery_current": "2026 카탈로그 이미지 보기",
+  "view_collection": "시리즈 및 사양 보기",
+  "catalogue_ready": "2026년 11월 6일 버전 · PDF · 23.2 MB"
+});
+
+Object.assign(TRANSLATIONS.vi, {
+  "new_title": "Cập nhật catalogue 2026",
+  "new_label": "Bộ sưu tập 2026",
+  "gallery_archive": "Xem hình ảnh catalogue trước",
+  "gallery_current": "Xem hình ảnh catalogue 2026",
+  "view_collection": "Xem dòng sản phẩm và thông số",
+  "catalogue_ready": "Bản ngày 6 tháng 11 năm 2026 · PDF · 23.2 MB"
+});

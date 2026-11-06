@@ -14,6 +14,7 @@ function harness(pdfPath, response) {
   const button = element(), status = element(), grid = element(), empty = element();
   const context = vm.createContext({
     CATALOGUE_2026: { pdfPath, downloadName: 'test-only.pdf', products: [] },
+    CATALOGUE_2026_HIGHLIGHTS: [], CATALOGUE_2026_PAGES: {},
     SERIES_MAP: { s01: {name:'Existing'}, s13: {name:'Airless'}, s14: {name:'Nozzle'} },
     TRANSLATIONS: { en: {} }, currentLang: 'en', Blob, AbortController,
     URL: { createObjectURL() { return 'blob:test'; }, revokeObjectURL() {} },
@@ -55,12 +56,17 @@ function harness(pdfPath, response) {
   assert.equal(vm.runInContext('getPublishedProducts().length',h.context),1);
   const content = fs.readFileSync(path.join(__dirname,'js/catalogue-data.js'),'utf8');
   const data = vm.createContext({}); vm.runInContext(content, data);
-  assert.equal(vm.runInContext('CATALOGUE_2026.pdfPath',data),null);
+  const pdfPath = vm.runInContext('CATALOGUE_2026.pdfPath',data);
+  assert.equal(fs.readFileSync(path.join(__dirname,pdfPath)).subarray(0,5).toString(), '%PDF-');
+  const pages = vm.runInContext('Object.values(CATALOGUE_2026_PAGES).flat()',data);
+  for (const page of pages) assert.ok(fs.existsSync(path.join(__dirname,`images/products/2026/pdf-${String(page).padStart(2,'0')}.jpg`)));
+  assert.equal(pages.length,60);
+  assert.equal(vm.runInContext('CATALOGUE_2026_HIGHLIGHTS.length',data),12);
   assert.equal(vm.runInContext('CATALOGUE_2026.products.length',data),0);
   const images = vm.runInContext('Object.values(LEGACY_GALLERY_IMAGES).flat()',data);
   for (const image of images) assert.ok(fs.existsSync(path.join(__dirname,image)),image);
   const translations=vm.createContext({});
   for (const file of ['translations.js','catalogue-translations.js']) vm.runInContext(fs.readFileSync(path.join(__dirname,'js',file),'utf8'),translations);
   for (const lang of ['en','zh','ko','vi']) assert.equal(vm.runInContext(`Object.keys(TRANSLATIONS.en).filter(k=>k.startsWith('catalogue_')).every(k=>!!TRANSLATIONS.${lang}[k])`,translations),true);
-  console.log(`PASS: absent PDF, unsafe path, HTTP failure, non-PDF response, PDF download flow, draft filtering, ${images.length} existing image paths, four languages. Test bytes are in memory only; no PDF file created.`);
+  console.log(`PASS: absent PDF, unsafe path, HTTP failure, non-PDF response, PDF download flow, draft filtering, ${images.length} existing image paths, four languages. Original PDF and 60 current catalogue page images verified. Test bytes are in memory only.`);
 })().catch(e=>{ console.error(e);process.exitCode=1; });

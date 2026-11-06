@@ -32,7 +32,7 @@ document.querySelectorAll('.series-nav-btn').forEach(btn => {
 let galleryRequest = 0;
 
 // ── OPEN SERIES GALLERY ──
-function openSeries(seriesKey) {
+function openSeries(seriesKey, legacy = false) {
   const series = SERIES_MAP[seriesKey];
   if (!series) return;
 
@@ -47,9 +47,26 @@ function openSeries(seriesKey) {
   emptyEl.style.display = 'none';
   const request = ++galleryRequest;
 
-  const candidates = (LEGACY_GALLERY_IMAGES[seriesKey] || []).map(src => ({
-    src, page: src.split('/').at(-2), idx: ''
-  }));
+  const currentPages = CATALOGUE_2026_PAGES[seriesKey] || [];
+  const useCurrent = !legacy && currentPages.length > 0;
+  const candidates = useCurrent
+    ? currentPages.map(page => ({ src: `images/products/2026/pdf-${String(page).padStart(2, '0')}.jpg`, page: `2026 · PDF ${page}`, idx: '' }))
+    : (LEGACY_GALLERY_IMAGES[seriesKey] || []).map(src => ({ src, page: `Archive · ${src.split('/').at(-2)}`, idx: '' }));
+  const versionButton = document.getElementById('galleryVersion');
+  versionButton.hidden = !(currentPages.length && LEGACY_GALLERY_IMAGES[seriesKey]?.length);
+  versionButton.dataset.i18n = useCurrent ? 'gallery_archive' : 'gallery_current';
+  versionButton.textContent = catalogueText(versionButton.dataset.i18n);
+  versionButton.onclick = () => openSeries(seriesKey, !legacy);
+  const galleryInquiry = document.getElementById('galleryInquiry');
+  galleryInquiry.onclick = () => {
+    closeGallery();
+    const select = document.getElementById('modalProduct');
+    const value = ['s13', 's14'].includes(seriesKey) ? seriesKey : series.name.split(/[\u4e00-\u9fff]/)[0].trim();
+    const matching = Array.from(select.options).find(o => o.value === value || o.textContent === value);
+    if (matching) select.value = matching.value;
+    document.getElementById('inquiryModal').classList.add('open');
+    document.body.style.overflow = 'hidden';
+  };
   const additions = getPublishedProducts().filter(p => p.series === seriesKey);
   additions.forEach(p => grid.appendChild(createProductCard(p)));
   emptyEl.style.display = candidates.length || additions.length ? 'none' : 'block';
@@ -59,6 +76,8 @@ function openSeries(seriesKey) {
   let attempted = 0;
 
   candidates.forEach(({ src, page, idx }) => {
+    const slot = document.createElement('div');
+    grid.appendChild(slot);
     const img = new Image();
     img.onload = () => {
       if (request !== galleryRequest) return;
@@ -70,11 +89,11 @@ function openSeries(seriesKey) {
         <div class="gallery-item-label">${page.toUpperCase()}</div>
       `;
       item.querySelector('img').addEventListener('click', () => openZoom(item.querySelector('img')));
-      grid.appendChild(item);
+      slot.replaceWith(item);
       emptyEl.style.display = 'none';
       checkDone();
     };
-    img.onerror = () => { checkDone(); };
+    img.onerror = () => { slot.remove(); checkDone(); };
     img.src = src;
   });
 
@@ -175,9 +194,16 @@ document.addEventListener('DOMContentLoaded', () => {
     const series = SERIES_MAP[seriesKey];
     if (!series) return;
 
-    const src = (LEGACY_GALLERY_IMAGES[seriesKey] || [])[0]
+    const currentPages = CATALOGUE_2026_PAGES[seriesKey] || [];
+    const src = (currentPages.length ? `images/products/2026/pdf-${String(currentPages[0]).padStart(2, '0')}.jpg` : null)
+      || (LEGACY_GALLERY_IMAGES[seriesKey] || [])[0]
       || getPublishedProducts().find(p => p.series === seriesKey && p.image)?.image;
     const placeholder = card.querySelector('.series-placeholder');
+    const label = card.querySelector('.series-card-pages');
+    if (currentPages.length && label) {
+      label.removeAttribute('data-i18n');
+      label.textContent = `2026 · PDF ${currentPages[0]}${currentPages.length > 1 ? '–' + currentPages.at(-1) : ''}`;
+    }
     if (!src || !placeholder) return;
     const img = new Image();
     img.onload = () => {

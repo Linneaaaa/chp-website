@@ -70,11 +70,33 @@ document.addEventListener('DOMContentLoaded', () => {
   });
   const products = getPublishedProducts();
   const grid = document.getElementById('newProductsGrid');
+  CATALOGUE_2026_HIGHLIGHTS.forEach(({ series, page }) => {
+    const card = document.createElement('article');
+    card.className = 'new-product-card';
+    const image = document.createElement('img');
+    image.src = `images/products/2026/photo-${String(page).padStart(2, '0')}.jpg`;
+    image.alt = SERIES_MAP[series].name;
+    image.loading = 'lazy';
+    const heading = document.createElement('h4');
+    heading.textContent = SERIES_MAP[series].name;
+    const source = document.createElement('a');
+    source.href = `${CATALOGUE_2026.pdfPath}#page=${page}`;
+    source.target = '_blank';
+    source.rel = 'noopener';
+    source.textContent = `2026 · PDF ${page}`;
+    const button = document.createElement('button');
+    button.className = 'btn-gold';
+    button.dataset.i18n = 'view_collection';
+    button.textContent = catalogueText('view_collection');
+    button.addEventListener('click', () => openSeries(series));
+    card.append(image, heading, source, button);
+    grid.appendChild(card);
+  });
   products.forEach(p => grid.appendChild(createProductCard(p)));
-  document.getElementById('newProductsEmpty').hidden = products.length > 0;
+  document.getElementById('newProductsEmpty').hidden = products.length > 0 || CATALOGUE_2026_HIGHLIGHTS.length > 0;
   for (const key of ['s13', 's14']) {
     const note = document.querySelector(`[data-series="${key}"].series-card .series-coming`);
-    if (note) note.hidden = products.some(p => p.series === key);
+    if (note) note.hidden = products.some(p => p.series === key) || !!CATALOGUE_2026_PAGES[key]?.length;
   }
 
   const button = document.querySelector('[data-catalogue-download]');

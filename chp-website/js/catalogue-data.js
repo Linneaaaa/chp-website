@@ -1,7 +1,7 @@
 // Public website content. See CONTENT-2026.md before publishing.
-// Leave pdfPath null until the real 2026 PDF is uploaded to downloads/.
+// Source: original CHP PC 2026 (1106 edition), 80 PDF pages.
 const CATALOGUE_2026 = {
-  pdfPath: null,
+  pdfPath: 'downloads/CHP-2026-Product-Catalogue.pdf',
   downloadName: 'CHP-2026-Product-Catalogue.pdf',
   products: []
 };
@@ -87,3 +87,143 @@ const LEGACY_GALLERY_IMAGES = {
     "images/products/12-sample_试用装/p68/p68-1.png"
   ]
 };
+
+// Physical PDF page numbers (including cover), not printed footer numbers.
+const CATALOGUE_2026_PAGES = {
+  "s01": [
+    7,
+    8,
+    9,
+    10,
+    11,
+    12
+  ],
+  "s02": [
+    14,
+    15,
+    16,
+    17,
+    18,
+    19,
+    20,
+    21,
+    22,
+    23,
+    24,
+    25,
+    26,
+    27,
+    28,
+    29,
+    30,
+    31,
+    32
+  ],
+  "s03": [
+    34,
+    35,
+    36
+  ],
+  "s04": [
+    38
+  ],
+  "s05": [
+    40
+  ],
+  "s06": [
+    42,
+    43,
+    44,
+    45,
+    46,
+    47,
+    48,
+    49,
+    50,
+    51,
+    52,
+    53,
+    54
+  ],
+  "s07": [
+    56,
+    57,
+    58
+  ],
+  "s08": [
+    60
+  ],
+  "s09": [
+    62,
+    63,
+    64,
+    65,
+    66,
+    67,
+    68
+  ],
+  "s10": [
+    75
+  ],
+  "s12": [
+    77,
+    78
+  ],
+  "s13": [
+    70,
+    71
+  ],
+  "s14": [
+    73
+  ]
+};
+const CATALOGUE_2026_HIGHLIGHTS = [
+  {
+    "series": "s13",
+    "page": 70
+  },
+  {
+    "series": "s13",
+    "page": 71
+  },
+  {
+    "series": "s14",
+    "page": 73
+  },
+  {
+    "series": "s01",
+    "page": 11
+  },
+  {
+    "series": "s01",
+    "page": 12
+  },
+  {
+    "series": "s02",
+    "page": 27
+  },
+  {
+    "series": "s02",
+    "page": 31
+  },
+  {
+    "series": "s02",
+    "page": 32
+  },
+  {
+    "series": "s03",
+    "page": 36
+  },
+  {
+    "series": "s09",
+    "page": 66
+  },
+  {
+    "series": "s09",
+    "page": 67
+  },
+  {
+    "series": "s09",
+    "page": 68
+  }
+];
