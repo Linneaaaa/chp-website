@@ -1,4 +1,13 @@
 /* 2026 additions reuse the existing ivory, charcoal and champagne palette. */
+#brand-strip { padding:3.5rem 6%; flex-direction:column; gap:2rem; scroll-margin-top:90px; }
+.brand-strip-label { color:var(--champagne-dark); font-size:clamp(1rem,1.6vw,1.3rem); font-weight:500; letter-spacing:.12em; text-align:center; }
+.brand-names { display:grid; grid-template-columns:repeat(4,minmax(0,1fr)); gap:1.2rem 2rem; width:100%; max-width:1120px; text-align:center; }
+.brand-name { display:flex; align-items:center; justify-content:center; min-height:80px; padding:.8rem .4rem; border-bottom:1px solid var(--border); font-size:clamp(1.35rem,2.4vw,2rem); font-weight:600; letter-spacing:.025em; color:var(--charcoal); opacity:1; }
+@media(max-width:600px) {
+  #brand-strip { padding:2.5rem 6%; gap:1.5rem; }
+  .brand-names { grid-template-columns:repeat(2,minmax(0,1fr)); gap:.6rem 1rem; }
+  .brand-name { min-height:64px; font-size:clamp(1.15rem,4.8vw,1.5rem); }
+}
 [hidden] { display: none !important; }
 #catalogue2026 { scroll-margin-top: 100px; }
 .catalogue-banner { display:flex; align-items:center; justify-content:space-between; gap:2rem; padding:3rem 8%; background:var(--ivory); border-bottom:1px solid var(--border); }
