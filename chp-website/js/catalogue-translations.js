@@ -131,3 +131,11 @@ Object.assign(TRANSLATIONS.vi, {
   "view_collection": "Xem dòng sản phẩm và thông số",
   "catalogue_ready": "Bản ngày 6 tháng 11 năm 2026 · PDF · 23.2 MB"
 });
+
+TRANSLATIONS.zh.hero_headline = "瓶身，是品牌的<br><em class=\"hero-glow\">第一张脸</em>";
+
+TRANSLATIONS.en.hero_headline = "Your brand.<br><em class=\"hero-glow\">Beautifully bottled.</em>";
+
+TRANSLATIONS.ko.hero_headline = "브랜드의 첫인상,<br><em class=\"hero-glow\">용기에서 시작됩니다.</em>";
+
+TRANSLATIONS.vi.hero_headline = "Dấu ấn thương hiệu<br><em class=\"hero-glow\">bắt đầu từ bao bì.</em>";
