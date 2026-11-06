@@ -6,6 +6,7 @@
 <title>CHP Packaging — Premium Cosmetic Bottle Manufacturer</title>
 <meta name="description" content="CHP Packaging — Global manufacturer of premium PET, PETG, PP & PE cosmetic bottles. OEM/ODM customization.">
 <link rel="stylesheet" href="css/style.css">
+<link rel="stylesheet" href="css/catalogue.css">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 </head>
@@ -56,11 +57,25 @@
     <div class="hero-actions fade-up-hero" style="--delay:0.7s">
       <a href="#products" class="btn-primary" data-i18n="hero_btn1">Explore Products →</a>
       <a href="#contact" class="btn-outline" data-modal="inquiry" data-i18n="hero_btn2">Request a Sample</a>
+      <a href="#catalogue2026" class="btn-gold" data-i18n="catalogue_title">2026 Product Catalogue</a>
     </div>
   </div>
   <div class="hero-scroll-hint">
     <span data-i18n="hero_scroll">Scroll</span>
     <div class="scroll-line"></div>
+  </div>
+</section>
+
+
+<section id="catalogue2026" class="catalogue-banner" aria-labelledby="catalogueTitle">
+  <div>
+    <span class="section-label">CHP · 2026</span>
+    <h2 id="catalogueTitle" class="section-title" data-i18n="catalogue_title">2026 Product Catalogue</h2>
+    <p class="section-subtitle" data-i18n="catalogue_intro">Discover our latest packaging collections.</p>
+  </div>
+  <div class="catalogue-actions">
+    <button class="btn-primary" data-catalogue-download disabled data-i18n="catalogue_pending">PDF coming soon</button>
+    <p data-catalogue-status role="status" data-i18n="catalogue_pending_note">The 2026 PDF is being prepared. Please check back soon.</p>
   </div>
 </section>
 
@@ -156,9 +171,19 @@
   <div class="section-header centered fade-up">
     <span class="section-label" data-i18n="products_label">Our Products</span>
     <h2 class="section-title" data-i18n="products_title" data-i18n-html="true">Designed for Beauty,<br>Built to Last</h2>
-    <p class="section-subtitle" data-i18n="products_desc">Browse our full catalog of 500+ SKUs across 12 series. Click any image to enlarge.</p>
+    <p class="section-subtitle" data-i18n="products_desc">Explore our packaging collections, including two new series for 2026.</p>
   </div>
 
+  <div class="product-catalogue-link">
+    <a href="#catalogue2026" data-i18n="catalogue_title">2026 Product Catalogue</a>
+  </div>
+  <section class="new-products" aria-labelledby="newProductsTitle">
+    <span class="section-label" data-i18n="new_label">New for 2026</span>
+    <h3 id="newProductsTitle" data-i18n="new_title">2026 New Products</h3>
+    <p id="newProductsEmpty" data-i18n="new_pending">New product images and details are being prepared.</p>
+    <div id="newProductsGrid" class="new-products-grid"></div>
+    <button class="btn-gold" data-modal="inquiry" data-i18n="new_inquire">Ask about the new collections</button>
+  </section>
   <!-- Series Navigation -->
   <div class="series-nav fade-up" id="seriesNav">
     <button class="series-nav-btn active" data-series="all">All Series</button>
@@ -174,6 +199,8 @@
     <button class="series-nav-btn" data-series="s10">Sunscreen</button>
     <button class="series-nav-btn" data-series="s11">Washing Bottle</button>
     <button class="series-nav-btn" data-series="s12">Sample</button>
+    <button class="series-nav-btn" data-series="s13" data-i18n="series_airless">Airless Bottle Series</button>
+    <button class="series-nav-btn" data-series="s14" data-i18n="series_nozzle">Precision Nozzle Bottle Series</button>
   </div>
 
   <!-- Series Cards -->
@@ -311,6 +338,14 @@
       </div>
     </div>
 
+    <button type="button" class="series-card new-series-card" data-series="s13" onclick="openSeries('s13')">
+      <span class="series-card-img"><span class="series-placeholder"><span class="series-num">13</span><span class="series-coming" data-i18n="details_pending">Details coming soon</span></span></span>
+      <span class="series-card-info"><span class="series-card-en">Airless Bottle Series</span><span class="series-card-zh">真空瓶系列</span><span class="series-card-pages" data-i18n="new_label">New for 2026</span></span>
+    </button>
+    <button type="button" class="series-card new-series-card" data-series="s14" onclick="openSeries('s14')">
+      <span class="series-card-img"><span class="series-placeholder"><span class="series-num">14</span><span class="series-coming" data-i18n="details_pending">Details coming soon</span></span></span>
+      <span class="series-card-info"><span class="series-card-en">Precision Nozzle Bottle Series</span><span class="series-card-zh">尖嘴瓶系列</span><span class="series-card-pages" data-i18n="new_label">New for 2026</span></span>
+    </button>
   </div>
 
   <!-- Gallery Lightbox (opens when series clicked) -->
@@ -321,10 +356,8 @@
     </div>
     <div class="gallery-grid" id="galleryGrid"></div>
     <div class="gallery-empty" id="galleryEmpty">
-      <div style="text-align:center;color:rgba(255,255,255,0.3);padding:4rem;">
-        <div style="font-size:3rem;margin-bottom:1rem;">📷</div>
-        <div style="font-size:0.9rem;letter-spacing:0.1em;">Upload product images to<br><code style="color:var(--champagne)">images/products/</code><br>to display them here</div>
-      </div>
+      <p data-i18n="new_pending">New product images and details are being prepared.</p>
+      <button class="btn-gold" onclick="closeGallery()" data-modal="inquiry" data-i18n="new_inquire">Ask about the new collections</button>
     </div>
   </div>
 
@@ -335,9 +368,7 @@
   <button class="zoom-arrow zoom-arrow-right" id="zoomNext" onclick="event.stopPropagation();zoomNext()">&#8250;</button>
   <button class="zoom-close" onclick="closeZoom()">✕</button>
 </div>
-    <img id="imgZoomImg" src="" alt="">
-    <button class="img-zoom-close" onclick="closeZoom()">✕</button>
-  </div>
+
 
   <div style="text-align:center;margin-top:3rem;" class="fade-up">
     <button class="btn-gold" data-modal="inquiry" data-i18n="products_cta">View Full Catalog &amp; Request Quote</button>
@@ -486,7 +517,7 @@
                 <option>Sunscreen Bottle 防晒瓶</option>
                 <option>Washing Bottle 洗护瓶</option>
                 <option>Sample 试用装</option>
-                <option>Custom / Other 其他定制</option>
+                <option value="s13" data-i18n="series_airless">Airless Bottle Series</option><option value="s14" data-i18n="series_nozzle">Precision Nozzle Bottle Series</option><option>Custom / Other 其他定制</option>
               </select>
             </div>
             <div class="form-group full"><label data-i18n="form_message">Requirements &amp; Message</label><textarea name="message" placeholder="Material, capacity, quantity, decoration, timeline..." data-i18n="form_message_placeholder"></textarea></div>
@@ -581,7 +612,7 @@
             <option>Triangular Bottle</option><option>Full Skincare Range</option>
             <option>Foam Bottle</option><option>Dropper Bottle</option>
             <option>Straight Round Jar</option><option>Sunscreen Bottle</option>
-            <option>Washing Bottle</option><option>Sample</option><option>Custom / Other</option>
+            <option>Washing Bottle</option><option>Sample</option><option value="s13" data-i18n="series_airless">Airless Bottle Series</option><option value="s14" data-i18n="series_nozzle">Precision Nozzle Bottle Series</option><option>Custom / Other</option>
           </select>
         </div>
         <div class="form-group"><label data-i18n="modal_message">Message</label><textarea name="message"></textarea></div>
@@ -610,8 +641,11 @@
 </div>
 
 <script src="js/translations.js"></script>
+<script src="js/catalogue-data.js"></script>
+<script src="js/catalogue-translations.js"></script>
 <script src="js/i18n.js"></script>
 <script src="js/main.js"></script>
 <script src="js/gallery.js"></script>
+<script src="js/catalogue.js"></script>
 </body>
 </html>

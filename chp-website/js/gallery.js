@@ -11,26 +11,25 @@ const SERIES_MAP = {
   s09: { name: "Straight Round Jar 直圆罐", folder: "09-straight-round-jar_直圆罐", pages: ["p56","p57","p58","p59","p60"] },
   s10: { name: "Sunscreen Bottle 防晒瓶", folder: "10-sunscreen-bottle_防晒瓶", pages: ["p62"] },
   s11: { name: "Washing Bottle 洗护瓶", folder: "11-washing-bottle_洗护瓶", pages: ["p64","p65"] },
+  s13: { name: "Airless Bottle Series 真空瓶系列", pages: [], folder: "13-airless-bottle" },
+  s14: { name: "Precision Nozzle Bottle Series 尖嘴瓶系列", pages: [], folder: "14-precision-nozzle-bottle" },
   s12: { name: "Sample 试用装", folder: "12-sample_试用装", pages: ["p67","p68"] },
 };
 
-// ── SERIES NAVIGATION FILTER ──
+// Filter immediately so rapid clicks cannot leave stale hide timers behind.
 document.querySelectorAll('.series-nav-btn').forEach(btn => {
+  btn.setAttribute('aria-pressed', String(btn.classList.contains('active')));
   btn.addEventListener('click', () => {
-    document.querySelectorAll('.series-nav-btn').forEach(b => b.classList.remove('active'));
-    btn.classList.add('active');
-    const target = btn.dataset.series;
+    document.querySelectorAll('.series-nav-btn').forEach(b => {
+      b.classList.toggle('active', b === btn);
+      b.setAttribute('aria-pressed', String(b === btn));
+    });
     document.querySelectorAll('.series-card').forEach(card => {
-      if (target === 'all' || card.dataset.series === target) {
-        card.style.display = '';
-        setTimeout(() => card.style.opacity = '1', 10);
-      } else {
-        card.style.opacity = '0';
-        setTimeout(() => card.style.display = 'none', 250);
-      }
+      card.hidden = btn.dataset.series !== 'all' && card.dataset.series !== btn.dataset.series;
     });
   });
 });
+let galleryRequest = 0;
 
 // ── OPEN SERIES GALLERY ──
 function openSeries(seriesKey) {
@@ -43,24 +42,26 @@ function openSeries(seriesKey) {
   const emptyEl = document.getElementById('galleryEmpty');
 
   titleEl.textContent = series.name;
+  emptyEl.querySelector('button').dataset.series = seriesKey;
   grid.innerHTML = '';
+  emptyEl.style.display = 'none';
+  const request = ++galleryRequest;
 
-  // Build list of candidate image paths: p6-1.jpg, p6-2.jpg ... p6-9.jpg
-  const basePath = `images/products/${series.folder}`;
-  const candidates = [];
-  series.pages.forEach(page => {
-    for (let i = 1; i <= 6; i++) {
-      candidates.push({ src: `${basePath}/${page}/${page}-${i}.png`, page, idx: i });
-    }
-  });
+  const candidates = (LEGACY_GALLERY_IMAGES[seriesKey] || []).map(src => ({
+    src, page: src.split('/').at(-2), idx: ''
+  }));
+  const additions = getPublishedProducts().filter(p => p.series === seriesKey);
+  additions.forEach(p => grid.appendChild(createProductCard(p)));
+  emptyEl.style.display = candidates.length || additions.length ? 'none' : 'block';
 
   // Try loading each image — only show those that actually exist
-  let loaded = 0;
+  let loaded = additions.length;
   let attempted = 0;
 
   candidates.forEach(({ src, page, idx }) => {
     const img = new Image();
     img.onload = () => {
+      if (request !== galleryRequest) return;
       loaded++;
       const item = document.createElement('div');
       item.className = 'gallery-item';
@@ -78,6 +79,7 @@ function openSeries(seriesKey) {
   });
 
   function checkDone() {
+    if (request !== galleryRequest) return;
     attempted++;
     if (attempted === candidates.length) {
       if (loaded === 0) {
@@ -91,6 +93,7 @@ function openSeries(seriesKey) {
 }
 
 function closeGallery() {
+  galleryRequest++;
   document.getElementById('galleryOverlay').classList.remove('open');
   document.body.style.overflow = '';
 }
@@ -172,26 +175,16 @@ document.addEventListener('DOMContentLoaded', () => {
     const series = SERIES_MAP[seriesKey];
     if (!series) return;
 
-    const firstPage = series.pages[0];
-    const folder = `images/products/${series.folder}`;
+    const src = (LEGACY_GALLERY_IMAGES[seriesKey] || [])[0]
+      || getPublishedProducts().find(p => p.series === seriesKey && p.image)?.image;
     const placeholder = card.querySelector('.series-placeholder');
-
-    // Try p6-1.png, p6-2.png ... until one loads
-    let tried = 0;
-    function tryNext(i) {
-      if (i > 6) return; // give up after 6 attempts
-      const img = new Image();
-      img.onload = () => {
-        // Success! Replace placeholder with the image
-        const imgEl = document.createElement('img');
-        imgEl.src = img.src;
-        imgEl.alt = series.name;
-        imgEl.style.cssText = 'width:100%;height:100%;object-fit:cover;display:block;';
-        placeholder.replaceWith(imgEl);
-      };
-      img.onerror = () => tryNext(i + 1);
-      img.src = `${folder}/${firstPage}/${firstPage}-${i}.png`;
-    }
-    tryNext(1);
+    if (!src || !placeholder) return;
+    const img = new Image();
+    img.onload = () => {
+      img.alt = series.name;
+      img.style.cssText = 'width:100%;height:100%;object-fit:cover;display:block;';
+      placeholder.replaceWith(img);
+    };
+    img.src = src;
   });
 });
