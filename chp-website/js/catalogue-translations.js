@@ -134,8 +134,8 @@ Object.assign(TRANSLATIONS.vi, {
 
 TRANSLATIONS.zh.hero_headline = "瓶身，是品牌的<br><em class=\"hero-glow\">第一张脸</em>";
 
-TRANSLATIONS.en.hero_headline = "Your brand.<br><em class=\"hero-glow\">Beautifully bottled.</em>";
+TRANSLATIONS.en.hero_headline = "Crafting Bottles<br>That <em class=\"hero-glow\">Elevate</em><br>Your Brand";
 
-TRANSLATIONS.ko.hero_headline = "브랜드의 첫인상,<br><em class=\"hero-glow\">용기에서 시작됩니다.</em>";
+TRANSLATIONS.ko.hero_headline = "브랜드의 가치를<br>높여주는 <em class=\"hero-glow\">특별한</em><br>용기를 만듭니다";
 
-TRANSLATIONS.vi.hero_headline = "Dấu ấn thương hiệu<br><em class=\"hero-glow\">bắt đầu từ bao bì.</em>";
+TRANSLATIONS.vi.hero_headline = "Chúng Tôi Tạo Ra<br>Những Chai Lọ <em class=\"hero-glow\">Nâng Tầm</em><br>Thương Hiệu Của Bạn";
