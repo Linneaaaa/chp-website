@@ -7,8 +7,14 @@ window.addEventListener('scroll', () => {
 // ── HAMBURGER ──
 const hamburger = document.getElementById('hamburger');
 const navLinks = document.getElementById('navLinks');
-hamburger?.addEventListener('click', () => { navLinks.classList.toggle('open'); });
-navLinks?.querySelectorAll('a').forEach(a => a.addEventListener('click', () => navLinks.classList.remove('open')));
+hamburger?.addEventListener('click', () => {
+  const open = navLinks.classList.toggle('open');
+  hamburger.setAttribute('aria-expanded', String(open));
+});
+navLinks?.querySelectorAll('a').forEach(a => a.addEventListener('click', () => {
+  navLinks.classList.remove('open');
+  hamburger?.setAttribute('aria-expanded', 'false');
+}));
 
 // ── HERO MOUSE SPOTLIGHT ──
 const spotlight = document.getElementById('heroSpotlight');
